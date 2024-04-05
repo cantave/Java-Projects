@@ -15,38 +15,37 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class YellowPagesScraper {
-    // Create a Logger instance for this class
     private static final Logger logger = LogManager.getLogger(YellowPagesScraper.class);
 
     public static void main(String[] args) {
-        try {
-            String url = "https://www.yellowpages.com/search?search_terms=farm+supply&geo_location_terms=mississippi";
-            Document doc = Jsoup.connect(url).get();
+        String baseUrl = "https://www.yellowpages.com/search?search_terms=farm+supply&geo_location_terms=mississippi";
+        int totalPages = 8; // Total number of pages to scrape
 
-            Elements listings = doc.select(".info"); // Adjust selector based on actual HTML
+        try (Workbook workbook = new XSSFWorkbook()) {
+            Sheet sheet = workbook.createSheet("Listings");
 
-            try (Workbook workbook = new XSSFWorkbook()) {
-                Sheet sheet = workbook.createSheet("Listings");
+            // Create a header row
+            Row headerRow = sheet.createRow(0);
+            headerRow.createCell(0).setCellValue("Name");
+            headerRow.createCell(1).setCellValue("Info");
+            headerRow.createCell(2).setCellValue("Address");
+            headerRow.createCell(3).setCellValue("Locality");
+            headerRow.createCell(4).setCellValue("Phone");
 
-                // Create a header row
-                Row headerRow = sheet.createRow(0);
+            int rowNum = 1; // Start at 1 to account for header row
 
-                // Creating header cells
-                headerRow.createCell(0).setCellValue("Name");
-                headerRow.createCell(1).setCellValue("Info");
-                headerRow.createCell(2).setCellValue("Address");
-                headerRow.createCell(3).setCellValue("Locality");
-                headerRow.createCell(4).setCellValue("Phone");
+            for (int page = 1; page <= totalPages; page++) {
+                String url = baseUrl + "&page=" + page;
+                Document doc = Jsoup.connect(url).get();
 
-                int rowNum = 1;
+                Elements listings = doc.select(".info"); // Adjusted selector based on actual HTML
 
                 for (Element listing : listings) {
-// Replace the selectors below based on the actual HTML structure of Yellow Pages listings
-                    String name = listing.select(".business-name").text(); // Example: ".business-name a"
+                    String name = listing.select(".business-name").text();
                     String info = listing.select(".categories").text();
-                    String address = listing.select(".street-address").text(); // Example: ".address"
+                    String address = listing.select(".street-address").text();
                     String locality = listing.select(".locality").text();
-                    String phone = listing.select(".phones.phone.primary").text();// Example: ".phone"
+                    String phone = listing.select(".phones.phone.primary").text();
 
                     Row row = sheet.createRow(rowNum++);
                     row.createCell(0).setCellValue(name);
@@ -55,11 +54,12 @@ public class YellowPagesScraper {
                     row.createCell(3).setCellValue(locality);
                     row.createCell(4).setCellValue(phone);
                 }
+            }
 
-                try (FileOutputStream outputStream = new FileOutputStream("Listings.xlsx")) {
-                    workbook.write(outputStream);
-                    logger.info("Spreadsheet generated successfully.");
-                }
+            // Write the workbook to a file
+            try (FileOutputStream outputStream = new FileOutputStream("Listings.xlsx")) {
+                workbook.write(outputStream);
+                logger.info("Spreadsheet generated successfully with data from all pages.");
             }
         } catch (IOException e) {
             logger.error("An error occurred: ", e);
