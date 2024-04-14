@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch((error) => {
         console.error('Error', error);
-        message.innerText = 'Failed to feth Yeezus Quote';
+        message.innerText = 'Failed to fetch Yeezus Quote';
       });
   });
 });

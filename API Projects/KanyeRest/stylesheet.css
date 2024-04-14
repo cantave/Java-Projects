@@ -1,60 +1,123 @@
-
 .bebas-neue-regular {
-    font-family: "Bebas Neue", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-  }
-  
+  font-family: "Bebas Neue", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
 
-body{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-areas: 
+body {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-areas:
     "header header header header"
     "img img msg msg"
     "img img msg msg"
-    "button button button button"
-    ;
+    "button button button button";
 }
 
-#pg-title{
-    display: flex;
-    justify-content: center;
-    border: solid black;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 60px;
-    letter-spacing: 44px;
+#pg-title {
+  display: flex;
+  justify-content: center;
+  border: solid black;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 60px;
+  letter-spacing: 44px;
 }
 
-header{
-    grid-area: header;
+header {
+  grid-area: header;
 }
 
-img{
-    display: flex;
-    grid-area: img;
-    margin: 0;
-    padding: 0 0 0 180px;
-    justify-content: center;
+img {
+  display: flex;
+  grid-area: img;
+  margin: 0;
+  padding: 0 0 0 180px;
+  justify-content: center;
+  width: 100%;
+}
+
+#message-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 250px;
+  padding-left: 250px;
+  grid-area: msg;
+}
+
+#btn-container {
+  grid-area: button;
+  display: flex;
+  justify-content: center;
+  margin-left: 300px;
+}
+
+@media screen and (max-width: 1000px) {
+  body {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-areas:
+      "header"
+      "img"
+      "msg"
+      "button";
+    justify-items: center;
+  }
+
+  .container, .row, [class^="col-"] {
     width: 100%;
-    
-}
+    max-width: none;
+    flex: 0 0 100%;
+    padding: 0; 
+  }
 
-#message-container{
+  #img-container {
+    display: flex; 
+    margin-left: 95px;
+    padding: 0;
+  }
+
+  #btn-container,
+  #message-container {
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  #pg-title {
+    font-size: 48px;
+    letter-spacing: 20px;
+    text-align: center;
+  }
+
+  header {
     display: flex;
-    align-items: center;
     justify-content: center;
-    margin-top: 250px;
-    padding-left: 250px;
-    grid-area: msg; 
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    padding: 0;
+
+  }
+
+  #pg-title,
+  #message-container,
+  #btn-container {
+    justify-content: center;
+    align-items: center; /* Add this if not already present */
+    width: 100%; /* Ensure they take full width of the grid area */
+  }
+
+  .row{
+    justify-content: center;
+  }
+
+  #message-container{
+    margin: 0;
+    justify-content: center;
+    margin-left: 15px;
+  }
 
 }
-
-#btn-container{
-    grid-area: button;
-    display: flex;
-    justify-content: center;
-    margin-left: 300px;
-}
-
-
