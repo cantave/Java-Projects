@@ -18,8 +18,8 @@ public class YellowPagesScraper {
     private static final Logger logger = LogManager.getLogger(YellowPagesScraper.class);
 
     public static void main(String[] args) {
-        String baseUrl = "https://www.yellowpages.com/search?search_terms=farm+supply&geo_location_terms=mississippi";
-        int totalPages = 8; // Total number of pages to scrape
+        String baseUrl = "https://www.yellowpages.com/search?search_terms=%22flower+shop%22+OR+%22florist%22&geo_location_terms=MS";
+        int totalPages = 24; // Total number of pages to scrape
 
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("Listings");
